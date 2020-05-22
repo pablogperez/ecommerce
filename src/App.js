@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import './App.css';
@@ -25,10 +25,10 @@ class App extends React.Component {
             id: snapShot.id,
             ...snapShot.data()
           });
-          console.log(this.state);
+          //console.log(this.state);
         });
       }
-      setCurrentUser({userAuth}); //si se desloggea (userAuth) != true pero actualiza el estado con userAuth y permite que el header muestre sign in de nuevo.
+      setCurrentUser(userAuth); //si se desloggea (userAuth) != true pero actualiza el estado con userAuth y permite que el header muestre sign in de nuevo.
     });
   }
 
@@ -43,17 +43,27 @@ class App extends React.Component {
         <Switch>
           <Route exact path='/' component={HomePage} />
           <Route exact path='/shop' component={ShopPage} />
-          <Route exact path='/signin' component={SignInAndSignUpPage} />
+          <Route exact path='/signin' render={() => 
+            this.props.currentUser ? (
+              <Redirect to='/' />
+            ) : (
+              <SignInAndSignUpPage />
+            )} 
+          />
         </Switch>
       </div>
     );
   }
 }
 
+const mapStateToProps = ({user}) => ({
+  currentUser: user.currentUser
+})
+
 const mapDispatchToProps = dispatch => ({
   setCurrentUser: user => dispatch(setCurrentUser(user))
 });
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps)(App);
