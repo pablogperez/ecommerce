@@ -2,7 +2,6 @@ import { takeLatest, put, all, call } from 'redux-saga/effects';
 
 import UserActionTypes from './user.types';
 import { 
-    emailSignInStart,
     signInSuccess,
     signInFailure,
     signOutSuccess,
@@ -75,7 +74,7 @@ function* signUp({payload}) {
     }
     try {
         const { user } = yield auth.createUserWithEmailAndPassword(email, password);
-        yield put(signUpSuccess({user, additionalData: displayName}));
+        yield put(signUpSuccess({user, additionalData: {displayName}}));
     } catch (error) {
         alert(error);
         yield put(signUpFailure(error));
