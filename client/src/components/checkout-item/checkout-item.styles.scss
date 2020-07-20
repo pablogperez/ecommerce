@@ -31,6 +31,15 @@
             margin: 0 10px;
         }
     }
+    @media screen and (max-width: 800px) {
+        .quantity {
+            justify-content: center;
+        }
+
+        .price {
+            text-align: center;
+        }
+    }
 
     .remove-button {
         padding-left: 12px;
